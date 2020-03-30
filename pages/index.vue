@@ -1,6 +1,9 @@
 <template>
   <div class="container">
     <div>
+      <button @click="handleAddUser">
+        Add User
+      </button>
       <div v-if="loading">Loading</div>
       <div
         v-else
@@ -34,6 +37,16 @@ export default Vue.extend({
         this.loading = false;
         this.users = users.data.data;
       });
+  },
+  methods: {
+    handleAddUser() {
+      const id = Math.floor(Math.random() * 10000) + 1;
+      (this as any).$axios.post('https://sample-app.getsandbox.com/users', {
+        id,
+        name: 'Random',
+        username: `randomuser${id}`
+      });
+    }
   }
 })
 </script>
