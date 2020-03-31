@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div>
-      <button @click="handleAddUser">
+      <button @click="handleAddUser" v-if="!loading">
         Add User
       </button>
       <div v-if="loading">Loading</div>
@@ -32,20 +32,24 @@ export default Vue.extend({
     };
   },
   mounted() {
-    (this as any).$axios.get('https://sample-app.getsandbox.com/users')
-      .then((users: any) => {
-        this.loading = false;
-        this.users = users.data.data;
-      });
   },
   methods: {
-    handleAddUser() {
+    async handleAddUser() {
+      this.loading = true;
       const id = Math.floor(Math.random() * 10000) + 1;
-      (this as any).$axios.post('https://sample-app.getsandbox.com/users', {
+      await (this as any).$axios.post('https://sample-app.getsandbox.com/users', {
         id,
         name: 'Random',
         username: `randomuser${id}`
       });
+      this.getUserList();
+    },
+    getUserList() {
+      (this as any).$axios.get('https://sample-app.getsandbox.com/users')
+        .then((users: any) => {
+          this.loading = false;
+          this.users = users.data.data;
+        });
     }
   }
 })
