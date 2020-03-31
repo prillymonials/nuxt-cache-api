@@ -32,6 +32,7 @@ export default Vue.extend({
     };
   },
   mounted() {
+    this.getUserList();
   },
   methods: {
     async handleAddUser() {
